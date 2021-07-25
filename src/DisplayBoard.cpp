@@ -17,6 +17,11 @@ void DisplayBoard::SetBatteryVoltage(float batteryVoltage)
     this->batteryVoltage.value = batteryVoltage;
     this->batteryVoltage.dirty = true;
 }
+void DisplayBoard::SetBatteryReading(uint32_t batteryReading)
+{
+    this->batteryReading.value = batteryReading;
+    this->batteryReading.dirty = true;
+}
 
 void DisplayBoard::SetKeyboardConnectionState(uint8_t keyboardConnectionState)
 {

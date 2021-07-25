@@ -20,7 +20,7 @@ void displayTask( void * parameter ) {
       displayBoard.caliperValue.dirty = false;
     }
     if( displayBoard.batteryVoltage.dirty ) {
-      drawBatteryBar(displayBoard.batteryVoltage.value);
+      drawBatteryBar(displayBoard.batteryVoltage.value,displayBoard.batteryReading.value);
       displayBoard.batteryVoltage.dirty = false;
     }
     if( displayBoard.displayBrightness.dirty ) {
@@ -33,13 +33,16 @@ void displayTask( void * parameter ) {
     }
   }
 }
-void drawBatteryBar(float level) {
+void drawBatteryBar(float level, uint32_t rawreading) {
   char buf[10];
   sprintf(buf, "%.2fV", level );
   tft.setTextColor(TFT_SKYBLUE);
-  tft.fillRect(tft.width()-80,0,100,15, TFT_BLACK);
+  tft.fillRect(tft.width()-80,0,100,30, TFT_BLACK);
   tft.setFreeFont(&FreeSansBold9pt7b);
   tft.setCursor(tft.width()-80, 14);
+  tft.print(buf);
+  sprintf(buf, "%d", rawreading);
+  tft.setCursor(tft.width()-80, 29);
   tft.print(buf);
 }
 
@@ -47,7 +50,7 @@ void drawCaliperValue( int32_t value) {
   char buf[16];
   sprintf(buf, "%.2f", value/100.0);
   tft.setTextColor(TFT_LIGHTGREY);
-  tft.fillRect(0,40,tft.width()-60,46,TFT_BLACK);
+  tft.fillRect(0,40,tft.width()-40,46,TFT_BLACK);
   tft.setFreeFont(&FreeSansBold24pt7b);
   tft.setCursor(10, tft.height()/2+10);
   tft.print(buf);

@@ -95,14 +95,14 @@ void readCaliperTask( void * parameter )
 
         // set last_valid_reading
         // only if last 3 readings where equal
-        if( dro_buffer[new_dro_index] == dro_buffer[new_dro_index-1]
-            &&  dro_buffer[new_dro_index] == dro_buffer[new_dro_index-2])
-        {
+        //if( dro_buffer[new_dro_index] == dro_buffer[new_dro_index-1]
+        //    &&  dro_buffer[new_dro_index] == dro_buffer[new_dro_index-2])
+        //{
           if(last_valid_reading != dro_buffer[new_dro_index]) {
             last_valid_reading = dro_buffer[new_dro_index];
-            displayBoard.SetCaliperValue(dro_buffer[new_dro_index]);
+            displayBoard.SetCaliperValue(last_valid_reading);
           }
-        }
+//        }
       }
     }
 }
