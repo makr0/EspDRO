@@ -60,11 +60,8 @@ void sendReadingToKeyboard( ) {
 void batteryTask(void * parameter) {
   float VBAT;  // battery voltage from ESP32 ADC read
   int32_t VBAT_RAW;
-  TickType_t xLastWakeTime;
-  const TickType_t taskFrequency = 2000; // run every 2 seconds
+  const TickType_t taskFrequency = 1000; // run every 2 seconds
  
-  // Initialise the xLastWakeTime variable with the current time.
-  xLastWakeTime = xTaskGetTickCount ();
   /*
   The ADC value is a 12-bit number, so the maximum value is 4095 (counting from 0).
   To convert the ADC integer value to a real voltage you’ll need to divide it by the maximum value of 4095,
@@ -81,18 +78,14 @@ void batteryTask(void * parameter) {
     displayBoard.SetBatteryReading(VBAT_RAW);
     
     // Wait for the next cycle.
- 	  vTaskDelayUntil( &xLastWakeTime, taskFrequency );
+ 	  vTaskDelay( taskFrequency );
   }
 }
 
 void keyboardTask(void * parameter) {
-  TickType_t xLastWakeTime;
-  const TickType_t taskFrequency = 2000; // run every 2 seconds
+  const TickType_t taskFrequency = 500; // run every half second
  
-  // Initialise the xLastWakeTime variable with the current time.
-  xLastWakeTime = xTaskGetTickCount ();
-
-  uint8_t fakebattery = 0;
+  uint8_t fakebattery = 30;
   /*
   The ADC value is a 12-bit number, so the maximum value is 4095 (counting from 0).
   To convert the ADC integer value to a real voltage you’ll need to divide it by the maximum value of 4095,
@@ -101,12 +94,12 @@ void keyboardTask(void * parameter) {
   */
   for(;;) {
     bleKeyboard.setBatteryLevel(fakebattery++);
-    if(fakebattery == 100) fakebattery = 1;
+    if(fakebattery == 100) fakebattery = 33;
     if(displayBoard.keyboardConnectionState.value != bleKeyboard.isConnected()) {
         displayBoard.SetKeyboardConnectionState(bleKeyboard.isConnected());
     }
     // Wait for the next cycle.
- 	  vTaskDelayUntil( &xLastWakeTime, taskFrequency );
+ 	  vTaskDelay( taskFrequency );
   }
 }
 void tft_init() {
